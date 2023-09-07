@@ -19,14 +19,14 @@ def get_change_over_time_list(rand_change_40):
 
 if __name__ == '__main__':
     
-    mu, sigma = 1.1377, 0.23 # mean and standard deviation
-    initial_investment_amount = 100_000
+    mu, sigma = 0.1377, 0.23 # mean and standard deviation
+    initial_investment_amount = 30_000
     last_year_amount = []
 
     # see how much we will get on average after 100 trials.
     for _ in range(100):
         # random changes over 40 years
-        rand_change_40 = np.random.normal(mu, sigma, size=(40))
+        rand_change_40 = 1 + np.random.normal(mu, sigma, size=(40))
 
         # cumulative random changes over 40 years
         cum_rand_change_40 = get_change_over_time_list(rand_change_40)
@@ -40,6 +40,7 @@ if __name__ == '__main__':
     # print summary statistics for the amount remaining in last year:
     df = pd.DataFrame(data={'last_year_amount': last_year_amount})
     print(df.describe().round(2).apply(lambda s: s.apply('{:,}'.format)))
+    print('avg rate per year:', format(round(initial_investment_amount*(1+mu)**40, 2), ','))
 
     # format graph better
     ax = plt.gca()
